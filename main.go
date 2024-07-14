@@ -21,8 +21,8 @@ func redirectHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	http.HandleFunc("/", redirectHandler)
-	log.Println("Server is running on port 8080...")
-	if err := http.ListenAndServe(":8080", nil); err != nil {
+	log.Println("Server is running on port 80...")
+	if err := http.ListenAndServe(":80", nil); err != nil {
 		log.Fatalf("Server failed to start: %v", err)
 	}
 }
