@@ -22,13 +22,21 @@ func redirectHandler(w http.ResponseWriter, r *http.Request) {
 
 func defaultPage(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
-	fmt.Fprint(w, "<html><head><title>Redirect test</title></head><body><h1>Welcome to the Redirector Service</h1><p>Use /sa to go to Site A or /sc to go to Site C.</p></body></html>")
+	fmt.Fprint(w, "<html><head><title>Go redirect</title></head><body><h1>Welcome to the Redirector Service</h1><p>Use /sa to go to Site A or /sc to go to Site C.</p></body></html>")
 }
 
 func main() {
 	http.HandleFunc("/", redirectHandler)
-	log.Println("Server is running on port 80...")
-	if err := http.ListenAndServe(":80", nil); err != nil {
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+
+	// Serve 404 page for unmatched routes
+	http.HandleFunc("/404", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNotFound)
+		fmt.Fprint(w, "<html><head><title>404 Not Found</title></head><body><h1>404 Not Found</h1><p>The page you're looking for does not exist.</p></body></html>")
+	})
+
+	log.Println("Server is running on port 443...")
+	if err := http.ListenAndServeTLS(":443", "cert.pem", "key.pem", nil); err != nil {
 		log.Fatalf("Server failed to start: %v", err)
 	}
 }
