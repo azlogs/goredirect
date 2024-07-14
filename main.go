@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"strings"
@@ -15,8 +16,13 @@ func redirectHandler(w http.ResponseWriter, r *http.Request) {
 	case strings.HasPrefix(path, "/sc"):
 		http.Redirect(w, r, "https://whatsmyreferer.com/", http.StatusFound)
 	default:
-		http.NotFound(w, r)
+		defaultPage(w, r)
 	}
+}
+
+func defaultPage(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprint(w, "<html><head><title>Redirect test</title></head><body><h1>Welcome to the Redirector Service</h1><p>Use /sa to go to Site A or /sc to go to Site C.</p></body></html>")
 }
 
 func main() {
