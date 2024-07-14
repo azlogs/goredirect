@@ -22,7 +22,7 @@ func redirectHandler(w http.ResponseWriter, r *http.Request) {
 
 func defaultPage(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
-	fmt.Fprint(w, "<html><head><title>Go redirect</title></head><body><h1>Welcome to the Redirector Service</h1><p>Use /sa to go to Site A or /sc to go to Site C.</p></body></html>")
+	fmt.Fprint(w, "<html><head><title>Default Page</title></head><body><h1>Welcome to the Redirector Service</h1><p>Use /sa to go to Site A or /sc to go to Site C.</p></body></html>")
 }
 
 func main() {
@@ -36,7 +36,7 @@ func main() {
 	})
 
 	log.Println("Server is running on port 443...")
-	if err := http.ListenAndServeTLS(":443", "cert.pem", "key.pem", nil); err != nil {
+	if err := http.ListenAndServeTLS(":443", "", "", nil); err != nil {
 		log.Fatalf("Server failed to start: %v", err)
 	}
 }
